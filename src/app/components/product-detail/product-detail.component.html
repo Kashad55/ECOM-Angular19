@@ -1,0 +1,86 @@
+<div class="container mt-5" *ngIf="product">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card border-0">
+        <img [src]="product.imageUrl" [alt]="product.name" class="img-fluid rounded">
+      </div>
+    </div>
+    <div class="col-md-6">
+      <h2 class="mb-3">{{ product.name }}</h2>
+      <div class="d-flex align-items-center mb-3">
+        <div class="me-3">
+          <i class="bi bi-star-fill text-warning"></i>
+          <span class="ms-1">{{ product.rating }}</span>
+        </div>
+        <span class="badge" [ngClass]="product.inStock ? 'bg-success' : 'bg-danger'">
+          {{ product.inStock ? 'In Stock' : 'Out of Stock' }}
+        </span>
+      </div>
+      <p class="fs-4 mb-4">${{ product.price.toFixed(2) }}</p>
+      <p class="mb-4">{{ product.description }}</p>
+      
+      <div class="mb-4">
+        <h5 class="mb-3">Quantity</h5>
+        <div class="d-flex align-items-center">
+          <button class="btn btn-outline-secondary" (click)="decrementQuantity()">-</button>
+          <span class="mx-3">{{ quantity }}</span>
+          <button class="btn btn-outline-secondary" (click)="incrementQuantity()">+</button>
+        </div>
+      </div>
+      
+      <div class="d-grid gap-2">
+        <button 
+          class="btn btn-primary"
+          (click)="addToCart()"
+          [disabled]="!product.inStock"
+        >
+          <i class="bi bi-cart-plus"></i> Add to Cart
+        </button>
+        <button class="btn btn-outline-secondary">
+          <i class="bi bi-heart"></i> Add to Wishlist
+        </button>
+      </div>
+      
+      <div class="mt-5">
+        <h5>Product Details</h5>
+        <ul class="list-unstyled">
+          <li class="mb-2"><strong>Category:</strong> {{ product.category | titlecase }}</li>
+          <li class="mb-2"><strong>Gender:</strong> {{ product.gender | titlecase }}</li>
+          <li class="mb-2"><strong>SKU:</strong> {{ product.id | number:'6.0-0' }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Related Products -->
+  <div class="row mt-5">
+    <div class="col-12">
+      <h3 class="mb-4">You May Also Like</h3>
+      <div class="row g-4">
+        <div class="col-md-3" *ngFor="let relatedProduct of relatedProducts">
+          <div class="card h-100">
+            <img [src]="relatedProduct.imageUrl" class="card-img-top" [alt]="relatedProduct.name" style="height: 200px; object-fit: cover;">
+            <div class="card-body">
+              <h5 class="card-title">{{ relatedProduct.name }}</h5>
+              <div class="d-flex justify-content-between align-items-center">
+                <h6 class="m-0">${{ relatedProduct.price.toFixed(2) }}</h6>
+                <div>
+                  <i class="bi bi-star-fill text-warning"></i>
+                  <span class="ms-1">{{ relatedProduct.rating }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container mt-5" *ngIf="!product">
+  <div class="alert alert-warning">
+    <h4>Product Not Found</h4>
+    <p>Sorry, we couldn't find the product you're looking for.</p>
+    <a routerLink="/" class="btn btn-primary">Go Back to Home</a>
+  </div>
+</div>
